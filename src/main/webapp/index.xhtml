@@ -34,15 +34,15 @@
     <h:form>
         <h:messages/>
         <h:panelGrid columns="1">
-            <h:commandButton actionListener="#{personAction.btnDoSave}" value="save"/>
+            <h:commandButton actionListener="#{personAction2.btnDoSave}" value="save"/>
             <h:panelGroup>
                 <h:outputLabel value="name:"/>
-                <h:inputText value="#{personAction.person.name}"/>
+                <h:inputText value="#{personAction2.person.name}"/>
             </h:panelGroup>
         </h:panelGrid>
     </h:form>
 
-    <h:dataTable value="#{personAction.personList}" var="person">
+    <h:dataTable value="#{personAction2.personList}" var="person">
         <h:column>
             <f:facet name="header">uuid</f:facet>
             #{person.uuid}

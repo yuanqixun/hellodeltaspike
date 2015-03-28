@@ -18,29 +18,43 @@ import java.util.List;
  */
 @ConversationScoped
 @Named
-public class PersonAction implements Serializable{
+public class PersonAction2 implements Serializable {
+
+  @Inject
+  PersonDao personDao;
 
   Person person;
 
   List<Person> personList;
 
-  @Inject
-  PersonDao personDao;
-
   @PostConstruct
-  void afterCreate(){
+  void afterCreate() {
     person = new Person();
-    //personList = personDao.queryPersonList();
+    personList = queryPersonList();
   }
 
+  private List<Person> queryPersonList() {
+    String jql = "select o from Person o ";
+    List<Person> result = personDao.getEm().createQuery(jql, Person.class).getResultList();
+    if (result == null)
+      return new ArrayList<Person>();
+    return result;
+  }
+
+
   @Transactional
-  public void btnDoSave(ActionEvent event){
+  public void btnDoSave(ActionEvent event) {
     try {
-      person = personDao.savePerson(person);
-      String msg = "Saved:"+person.getName();
-      FacesContext.getCurrentInstance().addMessage(null,new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null));
+      if (StringUtils.isEmpty(person.getUuid())) {
+        personDao.getEm().persist(person);
+      } else {
+        personDao.getEm().merge(person);
+      }
+      personDao.getEm().flush();
+      String msg = "Saved:" + person.getName();
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null));
       person = new Person();
-      personList = personDao.queryPersonList();
+      personList = queryPersonList();
     } catch (Exception e) {
       e.printStackTrace();
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), null));
