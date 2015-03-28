@@ -1,0 +1,3 @@
+Problem:
+1. if just only one EntityManager anything is ok.
+2. if add another EntityManager(other datasource), there will be a error: JBAS010152: APPLICATION ERROR: transaction still active in request with status 0

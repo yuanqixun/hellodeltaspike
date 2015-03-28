@@ -23,9 +23,9 @@ public class PersonAction implements Serializable{
   @Inject
   EntityManager em;
 
-//  @Inject
-//  @MySqlEm
-//  EntityManager mysqlEm;
+  @Inject
+  @MySqlEm
+  EntityManager mysqlEm;
 
   Person person;
 
